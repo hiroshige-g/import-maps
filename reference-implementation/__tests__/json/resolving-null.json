@@ -1,0 +1,50 @@
+{
+  "importMapBaseURL": "https://example.com/app/index.html",
+  "baseURL": "https://example.com/js/app.mjs",
+  "name": "Entries with null values shouldn't allow fallback",
+  "tests": {
+    "No fallback to less-specific prefixes": {
+      "importMap": {
+        "imports": {
+          "a/": "/1/",
+          "a/b/": null,
+          "a/b/c/": "/1/2/"
+        }
+      },
+      "expectedResults": {
+        "a/x": "https://example.com/1/x",
+        "a/b/x": null,
+        "a/b/c/x": "https://example.com/1/2/x"
+      }
+    },
+    "No fallback to less-specific scopes": {
+      "importMap": {
+        "imports": {
+          "a": "https://example.com/a"
+        },
+        "scopes": {
+          "/js/": {
+            "a": null
+          }
+        }
+      },
+      "expectedResults": {
+        "a": null
+      }
+    },
+    "No fallback to absolute URL parsing": {
+      "importMap": {
+        "imports": {
+        },
+        "scopes": {
+          "/js/": {
+            "https://example.com/a": null
+          }
+        }
+      },
+      "expectedResults": {
+        "https://example.com/a": null
+      }
+    }
+  }
+}
